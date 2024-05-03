@@ -1,0 +1,42 @@
+<?php
+
+// Replace 'YOUR_USERNAME' with your GitHub username
+$username = 'YOUR_USERNAME';
+
+// GitHub API endpoint for fetching user repositories
+$api_url = "https://api.github.com/users/$username/repos";
+
+// Set up cURL
+$ch = curl_init();
+curl_setopt($ch, CURLOPT_URL, $api_url);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+curl_setopt($ch, CURLOPT_USERAGENT, 'Your-App-Name');
+
+// Execute cURL request
+$response = curl_exec($ch);
+
+// Check for errors
+if (curl_errno($ch)) {
+    echo 'Error:' . curl_error($ch);
+    exit;
+}
+
+// Close cURL session
+curl_close($ch);
+
+// Decode JSON response
+$repos = json_decode($response, true);
+
+// Check if user has any repositories
+if (empty($repos)) {
+    echo "User '$username' has no repositories.";
+    exit;
+}
+
+// Output repository information
+echo "<h1>Repositories for $username:</h1>";
+echo "<ul>";
+foreach ($repos as $repo) {
+    echo "<li><a href='{$repo['html_url']}'>{$repo['name']}</a> - {$repo['description']}</li>";
+}
+echo "</ul>";
