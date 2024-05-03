@@ -1,0 +1,14 @@
+// This is a simple PHP script that asks for your name and says hello!
+
+function sayHello($name) {
+  return "Hello, $name!";
+}
+
+if (isset($_GET['name'])) {
+  $name = $_GET['name'];
+  echo sayHello($name);
+} else {
+  echo "What's your name? <form><input type='text' name='name' /><input type='submit' /></form>";
+}
+
+?>
